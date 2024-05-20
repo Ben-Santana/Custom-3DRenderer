@@ -27,7 +27,6 @@ public class Polyhedron {
         this.position = position;
     }
 
-
     void rotate(int heading, int pitch) {
         double headingVal = Math.toRadians(heading);
         double pitchVal = Math.toRadians(pitch);
@@ -48,14 +47,14 @@ public class Polyhedron {
     }
 
 
-    void draw(BufferedImage img) {
+    void draw(BufferedImage img, Camera cam) {
         double[] zBuffer = new double[img.getWidth() * img.getHeight()];
         for (int i = 0; i < zBuffer.length; i++) {
             zBuffer[i] = Double.NEGATIVE_INFINITY;
         }
 
         for (Triangle t : mesh) {
-            t.draw(img, zBuffer, transform, position);
+            t.draw(img, cam, zBuffer, transform, position);
         }
     }
 }

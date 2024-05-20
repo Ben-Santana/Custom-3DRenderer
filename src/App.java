@@ -16,7 +16,9 @@ public class App {
         JSlider pitchSlider = new JSlider(SwingConstants.VERTICAL, -90, 90, 0);
         pane.add(pitchSlider, BorderLayout.EAST);
 
-        Cube tet = new Cube(new Vertex(80, 80, 0), 50);
+        Cube tet = new Cube(new Vertex(10, 0, 200), 50);
+        Cube tet2 = new Cube(new Vertex(-80, -80, 50000), 50);
+        Camera cam = new Camera();
 
         // panel to display render results
         JPanel renderPanel = new JPanel() {
@@ -26,13 +28,15 @@ public class App {
                 g2.fillRect(0, 0, getWidth(), getHeight());
 
                 tet.rotate(headingSlider.getValue(), pitchSlider.getValue());
+                tet2.rotate(headingSlider.getValue(), pitchSlider.getValue());
 
                 g2.translate(getWidth() / 2, getHeight() / 2);
 
                 BufferedImage img =
                         new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 
-                tet.draw(img);
+                tet.draw(img, cam);
+                
 
                 g2.drawImage(img, -getWidth() / 2, -getHeight() / 2, null);
             }
