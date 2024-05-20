@@ -52,9 +52,9 @@ public class Triangle {
         System.out.println("v2: (" + v2.x + ", " + v2.y + ")");
         System.out.println("v3: (" + v3.x + ", " + v3.y + ")");
 
-        // v1 = v1.project(cam, img.getWidth(), img.getHeight());
-        // v2 = v2.project(cam, img.getWidth(), img.getHeight());
-        // v3 = v3.project(cam, img.getWidth(), img.getHeight());
+        v1 = v1.project(cam, img.getWidth(), img.getHeight());
+        v2 = v2.project(cam, img.getWidth(), img.getHeight());
+        v3 = v3.project(cam, img.getWidth(), img.getHeight());
 
             // Debug: Check projected vertecies
         System.out.println("Projected vertices:");
