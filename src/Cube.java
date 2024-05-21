@@ -103,4 +103,55 @@ public class Cube extends Polyhedron {
                                     new Vertex(length, -length, length),
                                     Color.WHITE));
     }
+    Cube(Vertex position, int length, Color color) {
+        super(position);
+        this.mesh.add(new Triangle(new Vertex(length, length, length),
+                                    new Vertex(length, -length, length),
+                                    new Vertex(-length, -length, length),
+                                    color));
+        this.mesh.add(new Triangle(new Vertex(-length, -length, length),
+                                    new Vertex(-length, length, length),
+                                    new Vertex(length, length, length),
+                                    color));
+        this.mesh.add(new Triangle(new Vertex(-length, length, length),
+                                    new Vertex(-length, -length, length),
+                                    new Vertex(-length, -length, -length),
+                                    color));
+        this.mesh.add(new Triangle(new Vertex(-length, -length, -length),
+                                    new Vertex(-length, length, -length),
+                                    new Vertex(-length, length, length),
+                                    color));
+        this.mesh.add(new Triangle(new Vertex(length, length, length),
+                                    new Vertex(length, length, -length),
+                                    new Vertex(-length, length, -length),
+                                    color));
+        this.mesh.add(new Triangle(new Vertex(-length, length, -length),
+                                    new Vertex(-length, length, length),
+                                    new Vertex(length, length, length),
+                                    color));
+        this.mesh.add(new Triangle(new Vertex(length, length, -length),
+                                    new Vertex(length, -length, -length),
+                                    new Vertex(-length, -length, -length),
+                                    color));
+        this.mesh.add(new Triangle(new Vertex(-length, -length, -length),
+                                    new Vertex(-length, length, -length),
+                                    new Vertex(length, length, -length),
+                                    color));
+        this.mesh.add(new Triangle(new Vertex(length, length, length),
+                                    new Vertex(length, -length, length),
+                                    new Vertex(length, -length, -length),
+                                    color));
+        this.mesh.add(new Triangle(new Vertex(length, -length, -length),
+                                    new Vertex(length, length, -length),
+                                    new Vertex(length, length, length),
+                                    color));
+        this.mesh.add(new Triangle(new Vertex(length, -length, length),
+                                    new Vertex(length, -length, -length),
+                                    new Vertex(-length, -length, -length),
+                                    color));
+        this.mesh.add(new Triangle(new Vertex(-length, -length, -length),
+                                    new Vertex(-length, -length, length),
+                                    new Vertex(length, -length, length),
+                                    color));
+    }
 }

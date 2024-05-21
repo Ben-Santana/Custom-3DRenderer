@@ -24,9 +24,11 @@ public class Triangle {
         double greenLinear = Math.pow(color.getGreen(), 2.4) * shade;
         double blueLinear = Math.pow(color.getBlue(), 2.4) * shade;
 
-        int red = (int) Math.pow(redLinear, 1/2.4);
-        int green = (int) Math.pow(greenLinear, 1/2.4);
-        int blue = (int) Math.pow(blueLinear, 1/2.4);
+        Color minColor = new Color(color.getRed()/255, color.getGreen()/255, color.getBlue()/255);
+
+        int red = Math.max(minColor.getRed() * 50, (int) Math.pow(redLinear, 1/2.4));
+        int green = Math.max(minColor.getGreen() * 50, (int) Math.pow(greenLinear, 1/2.4));
+        int blue = Math.max(minColor.getBlue() * 50, (int) Math.pow(blueLinear, 1/2.4));
 
         return new Color(red, green, blue);
     }
@@ -46,40 +48,6 @@ public class Triangle {
         v3.y += position.y;
         v3.z += position.z;
 
-            // Debug: Check initial coordinates
-        System.out.println("Initial vertices:");
-        System.out.println("v1: (" + v1.x + ", " + v1.y + ")");
-        System.out.println("v2: (" + v2.x + ", " + v2.y + ")");
-        System.out.println("v3: (" + v3.x + ", " + v3.y + ")");
-
-        v1 = v1.project(cam, img.getWidth(), img.getHeight());
-        v2 = v2.project(cam, img.getWidth(), img.getHeight());
-        v3 = v3.project(cam, img.getWidth(), img.getHeight());
-
-            // Debug: Check projected vertecies
-        System.out.println("Projected vertices:");
-        System.out.println("v1: (" + v1.x + ", " + v1.y + ")");
-        System.out.println("v2: (" + v2.x + ", " + v2.y + ")");
-        System.out.println("v3: (" + v3.x + ", " + v3.y + ")");
-
-        v1.x += img.getWidth() / 2;
-        v1.y += img.getHeight() / 2;
-        v2.x += img.getWidth() / 2;
-        v2.y += img.getHeight() / 2;
-        v3.x += img.getWidth() / 2;
-        v3.y += img.getHeight() / 2;
-
-            // Debug: Check screen space coordinates
-        System.out.println("Screen space vertices:");
-        System.out.println("v1: (" + v1.x + ", " + v1.y + ")");
-        System.out.println("v2: (" + v2.x + ", " + v2.y + ")");
-        System.out.println("v3: (" + v3.x + ", " + v3.y + ")");
-
-        int minX = (int) Math.max(0, Math.ceil(Math.min(v1.x, Math.min(v2.x, v3.x))));
-        int maxX = (int) Math.min(img.getWidth() - 1, Math.floor(Math.max(v1.x, Math.max(v2.x, v3.x))));
-        int minY = (int) Math.max(0, Math.ceil(Math.min(v1.y, Math.min(v2.y, v3.y))));
-        int maxY = (int) Math.min(img.getHeight() - 1, Math.floor(Math.max(v1.y, Math.max(v2.y, v3.y))));
-
         //find normal of triangle for shading
         Vertex ab = new Vertex(v2.x - v1.x, v2.y - v1.y, v2.z - v1.z);
         Vertex ac = new Vertex(v3.x - v1.x, v3.y - v1.y, v3.z - v1.z);
@@ -95,6 +63,22 @@ public class Triangle {
 
         double angleCos = Math.abs(norm.z);
 
+        v1 = v1.project(cam, img.getWidth(), img.getHeight());
+        v2 = v2.project(cam, img.getWidth(), img.getHeight());
+        v3 = v3.project(cam, img.getWidth(), img.getHeight());
+
+        v1.x += img.getWidth() / 2;
+        v1.y += img.getHeight() / 2;
+        v2.x += img.getWidth() / 2;
+        v2.y += img.getHeight() / 2;
+        v3.x += img.getWidth() / 2;
+        v3.y += img.getHeight() / 2;
+
+        int minX = (int) Math.max(0, Math.ceil(Math.min(v1.x, Math.min(v2.x, v3.x))));
+        int maxX = (int) Math.min(img.getWidth() - 1, Math.floor(Math.max(v1.x, Math.max(v2.x, v3.x))));
+        int minY = (int) Math.max(0, Math.ceil(Math.min(v1.y, Math.min(v2.y, v3.y))));
+        int maxY = (int) Math.min(img.getHeight() - 1, Math.floor(Math.max(v1.y, Math.max(v2.y, v3.y))));
+
         //find triangle area for coloring
         double triangleArea = (v1.y - v3.y) * (v2.x - v3.x) + (v2.y - v3.y) * (v3.x - v1.x);
 
@@ -109,7 +93,8 @@ public class Triangle {
 
                     double depth = b1 * v1.z + b2 * v2.z + b3 * v3.z;
                     int zIndex = y * img.getWidth() + x;
-                    if (zBuffer[zIndex] < depth
+                    if (zBuffer[zIndex] < 0
+                        && zBuffer[zIndex] < depth
                         && x < img.getWidth() && x > 0
                         && y < img.getHeight() && y > 0) {
                         zBuffer[zIndex] = depth;

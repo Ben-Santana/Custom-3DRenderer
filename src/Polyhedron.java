@@ -48,13 +48,26 @@ public class Polyhedron {
 
 
     void draw(BufferedImage img, Camera cam) {
-        double[] zBuffer = new double[img.getWidth() * img.getHeight()];
-        for (int i = 0; i < zBuffer.length; i++) {
-            zBuffer[i] = Double.NEGATIVE_INFINITY;
+        if(position.z < 0){
+            double[] zBuffer = new double[img.getWidth() * img.getHeight()];
+            for (int i = 0; i < zBuffer.length; i++) {
+                zBuffer[i] = Double.NEGATIVE_INFINITY;
+            }
+            for (Triangle t : mesh) {
+                t.draw(img, cam, zBuffer, transform, position);
+            }
         }
+    }
 
-        for (Triangle t : mesh) {
-            t.draw(img, cam, zBuffer, transform, position);
-        }
+    void move(double dx, double dy, double dz) {
+        position.x += dx;
+        position.y += dy;
+        position.z += dz;
+    }
+
+    void moveTo(double x, double y, double z){
+        position.x = x;
+        position.y = y;
+        position.z = z;
     }
 }
