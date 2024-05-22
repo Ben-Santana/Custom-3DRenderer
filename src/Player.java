@@ -4,12 +4,15 @@ import java.awt.image.BufferedImage;
 public class Player {
     private Cube body;
     public Vertex velocity;
-    private Vertex acceleration;
+    public int pitch;
+    public int heading;
+    public Vertex acceleration;
     private double maxSpeed;
     Player(Vertex position, Color color) {
         body = new Cube(position, 10, color);
         velocity = new Vertex(0, 0, 0);
         acceleration = new Vertex(0, 0, 0);
+        maxSpeed = 10.0;
     }
     void move() {
         if(velocity.x + acceleration.x <= maxSpeed) {
@@ -29,13 +32,10 @@ public class Player {
     Cube getBody() {
         return body;
     }
-    void rotate(int heading, int pitch){
-        body.rotate(heading, pitch);
+    void rotate(){
+        body.rotate(this.heading, this.pitch);
     }
     void draw(BufferedImage img, Camera cam){
         body.draw(img, cam);
-    }
-    void setAcceleration(Vertex accel){
-        acceleration = accel;
     }
 }

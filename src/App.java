@@ -1,8 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
-public class App {
+public class App implements KeyListener{
     private Player player;
     private Camera cam;
     private JPanel renderPanel;
@@ -19,15 +21,7 @@ public class App {
         Container pane = frame.getContentPane();
         pane.setLayout(new BorderLayout());
 
-        // slider to control horizontal rotation
-        JSlider headingSlider = new JSlider(0, 360, 180);
-        pane.add(headingSlider, BorderLayout.SOUTH);
-
-        // slider to control vertical rotation
-        JSlider pitchSlider = new JSlider(SwingConstants.VERTICAL, -90, 90, 0);
-        pane.add(pitchSlider, BorderLayout.EAST);
-
-        player = new Player(new Vertex(0, 0, -200), new Color(255, 255, 100));
+        player = new Player(new Vertex(0, 0, -100), new Color(255, 155, 100));
         cam = new Camera();
 
         // panel to display render results
@@ -39,7 +33,8 @@ public class App {
                 g2.setColor(Color.BLACK);
                 g2.fillRect(0, 0, getWidth(), getHeight());
 
-                player.rotate(headingSlider.getValue(), pitchSlider.getValue());
+                player.rotate();
+
 
                 g2.translate(getWidth() / 2, getHeight() / 2);
 
@@ -52,21 +47,108 @@ public class App {
             }
         };
 
-        // if input of sliders change, redraw the 3D model
-        headingSlider.addChangeListener(e -> renderPanel.repaint());
-        pitchSlider.addChangeListener(e -> renderPanel.repaint());
-
         pane.add(renderPanel, BorderLayout.CENTER);
 
         frame.setSize(800, 600);
         frame.setVisible(true);
 
-        // Add KeyListener to the frame
-        frame.setFocusable(true);
-        frame.requestFocusInWindow();
-
         // Ensure the render panel is focusable and request focus
+        renderPanel.addKeyListener(this);
         renderPanel.setFocusable(true);
         renderPanel.requestFocusInWindow();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        switch (keyCode) {
+            case KeyEvent.VK_W:
+                player.velocity.z = -2;
+                renderPanel.repaint();
+                break;
+            case KeyEvent.VK_S:
+                player.velocity.z = 2;
+                renderPanel.repaint();
+                break;
+            case KeyEvent.VK_A:
+                player.velocity.x = 2;
+                renderPanel.repaint();
+                break;
+            case KeyEvent.VK_D:
+                player.velocity.x = -2;
+                renderPanel.repaint();
+                break;
+            case KeyEvent.VK_SPACE:
+                player.velocity.y = 2;
+                renderPanel.repaint();
+                break;
+            case KeyEvent.VK_SHIFT:
+                player.velocity.y = -2;
+                renderPanel.repaint();
+                break;
+            case KeyEvent.VK_E:
+                player.heading += 2;
+                renderPanel.repaint();
+                break;
+            case KeyEvent.VK_Q:
+                player.heading -= 2;
+                renderPanel.repaint();
+                break;
+            case KeyEvent.VK_R:
+                player.pitch -= 2;
+                renderPanel.repaint();
+                break;
+            case KeyEvent.VK_F:
+                player.pitch += 2;
+                renderPanel.repaint();
+                break;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        switch (keyCode) {
+            case KeyEvent.VK_W:
+                if(player.velocity.z == -2) {
+                    player.velocity.z = 0;
+                    renderPanel.repaint();
+                }
+                break;
+            case KeyEvent.VK_S:
+                if(player.velocity.z == 2) {
+                    player.velocity.z = 0;
+                    renderPanel.repaint();
+                }
+                break;
+            case KeyEvent.VK_A:
+                if(player.velocity.x == 2) {
+                    player.velocity.x = 0;
+                    renderPanel.repaint();
+                }
+                break;
+            case KeyEvent.VK_D:
+                if(player.velocity.x == -2) {
+                    player.velocity.x = 0;
+                    renderPanel.repaint();
+                }
+                break;
+            case KeyEvent.VK_SPACE:
+                if(player.velocity.y == 2) {
+                    player.velocity.y = 0;
+                    renderPanel.repaint();
+                }
+                break;
+            case KeyEvent.VK_SHIFT:
+                if(player.velocity.y == -2) {
+                    player.velocity.y = 0;
+                    renderPanel.repaint();
+                }
+                break;
+        }
     }
 }
