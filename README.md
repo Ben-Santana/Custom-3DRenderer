@@ -1,18 +1,11 @@
-## Getting Started
+## Custom perspective emulating projection
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+I decided to work out the math required to render the 3d objects in a perspective view as opposed to orthographically. Instead of using matrix multiplication to achieve this, I used the the proportion of the position of each vertex to the size of the plane of the camera's FOV at that z value, and scaled its position accordingly to the window.
 
-## Class Structure
+## Libraries
 
-The workspace contains two folders by default, where:
+I used java.swing and java.awt for displaying the 3D objects.
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+## Class structure
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+The Polyhedron parent class handles rotation, movement and drawing of all 3D objects. All 3D objects are made up of triangles which are made up of 3 vertex coordinates.

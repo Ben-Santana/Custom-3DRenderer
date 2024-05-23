@@ -21,7 +21,7 @@ public class App implements KeyListener{
         Container pane = frame.getContentPane();
         pane.setLayout(new BorderLayout());
 
-        player = new Player(new Vertex(0, 0, -100), new Color(255, 155, 100));
+        player = new Player(new Vertex(0, 0, -100), new Color(155, 155, 255));
         cam = new Camera();
 
         // panel to display render results
